@@ -1,19 +1,14 @@
-FROM ubuntu
+FROM index.alauda.cn/library/ubuntu
 MAINTAINER titushuang "ituzhi@163.com"
 ENV REFRESHED_AT 2015-10-12
 
 RUN apt-get update \
-    && apt-get install -y mysql-server-5.6 python python-pip libmysqlclient-dev
+    && apt-get install -y mysql-server-5.6 python python-dev python-pip libmysqlclient-dev nginx
 
-RUN apt-get install -y python-dev
-RUN apt-get -y -q install nginx
-RUN pip install MySQL-python 
-RUN pip install flask 
+RUN pip install MySQL-python flask 
 RUN pip install -U flask-cors
-RUN apt-get -y -q install curl
 
-RUN mkdir -p /home/toptopic
-RUN mkdir -p /home/toptopic/web
+RUN mkdir -p /home/toptopic /home/toptopic/web
 
 COPY init.sh /home/toptopic/init.sh
 COPY web /home/toptopic/web
@@ -24,7 +19,7 @@ COPY nginx/nginx.conf /etc/nginx/nginx.conf
 
 RUN ln -s /home/toptopic/web/www /usr/share/nginx/html
 
-RUN chmod +x /home/toptopic/init.sh
+RUN chmod +x /home/toptopic/init.sh 
 RUN chmod -R 755 /home/toptopic/web
 
 RUN ./etc/init.d/mysql start &&\  
@@ -35,6 +30,6 @@ RUN ./etc/init.d/mysql start &&\
     mysql -e "load data infile '/home/toptopic/question.txt' into table top_topic_zhihu.question fields terminated by ';;'"&&\ 
     mysql -e "grant all privileges on *.* to 'root'@'localhost' identified by 'dbpasswd';"
 
-CMD [ "/bin/bash", "/home/toptopic/init.sh", "start" ]
-   
 EXPOSE 2223 5000
+
+CMD [ "service mysqld start && /etc/init.d/nginx start" ]
