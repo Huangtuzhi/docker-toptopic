@@ -20,6 +20,7 @@ COPY question.txt /home/toptopic/question.txt
 
 COPY nginx/global.conf /etc/nginx/conf.d/
 COPY nginx/nginx.conf /etc/nginx/nginx.conf
+COPY mysql/my.cnf /etc/mysql/my.cnf
 
 RUN ln -s /home/toptopic/web/www /usr/share/nginx/html
 
@@ -36,4 +37,4 @@ RUN ./etc/init.d/mysql start &&\
 
 EXPOSE 2223 5000
 
-CMD [ "service mysqld start && /etc/init.d/nginx -g 'daemon off'" ]
+CMD ["/home/toptopic/init.sh"]
