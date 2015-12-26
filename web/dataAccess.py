@@ -187,7 +187,7 @@ class DataInfo(object):
         self.cursor.execute('''select * from question where
             ask_time > DATE_SUB(%s, INTERVAL %s DAY)
             order by followers desc limit 10;
-            ''', (today_date, look_days))
+            ''', ('2015-12-20', look_days))
         top_data = self.cursor.fetchall()
         ret_data = []
         if not top_data:
