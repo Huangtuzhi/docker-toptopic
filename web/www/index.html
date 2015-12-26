@@ -116,7 +116,7 @@ Date.prototype.format = function(format) {
             }
             }
             // 发送请求:
-            var resource_url = "toptopic-huangtuzhi.myalauda.cn:19995/toptopic/api/topics/" + day;
+            var resource_url = "http://toptopic-huangtuzhi.myalauda.cn:19995/toptopic/api/topics/" + day;
             
             request.open('GET', resource_url);
             request.send();
