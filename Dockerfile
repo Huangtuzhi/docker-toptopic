@@ -1,12 +1,16 @@
-FROM index.alauda.cn/library/ubuntu
+FROM ubuntu
 MAINTAINER titushuang "ituzhi@163.com"
 ENV REFRESHED_AT 2015-10-12
 
 RUN apt-get update \
-    && apt-get install -y mysql-server-5.6 python python-dev python-pip libmysqlclient-dev nginx
+    && apt-get install -y mysql-server-5.6 python python-pip libmysqlclient-dev
 
-RUN pip install MySQL-python flask 
+RUN apt-get install -y python-dev
+RUN apt-get -y -q install nginx
+RUN pip install MySQL-python 
+RUN pip install flask 
 RUN pip install -U flask-cors
+RUN apt-get -y -q install curl
 
 RUN mkdir -p /home/toptopic /home/toptopic/web
 
@@ -32,4 +36,4 @@ RUN ./etc/init.d/mysql start &&\
 
 EXPOSE 2223 5000
 
-CMD [ "service mysqld start && /etc/init.d/nginx start" ]
+CMD [ "service mysqld start && /etc/init.d/nginx -g 'daemon off'" ]
